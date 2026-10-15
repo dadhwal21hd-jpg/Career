@@ -30,8 +30,8 @@ Goal: analyst roles — AMEX Risk Analyst (stretch), pharma / healthcare analyti
 | 12 Oct | 1 | Lesson 8 practice + COUNT / GROUP BY / HAVING / execution order | ✅ |
 | 13 Oct | 1 | SQLBolt lessons 9–18 (all done) | ✅ |
 | 14 Oct | 1 | LeetCode SQL 50: problems 1–6 done (#4 redone with DISTINCT; #6 used LEFT JOIN … USING). Learned: DISTINCT vs GROUP BY, operators run left to right, REPLACE/LENGTH/TRIM word count | ✅ |
-| 15 Oct | 1 | Problem 7 solved alone (visits with no transaction: LEFT JOIN + IS NULL). Learned: every SELECT column must be in GROUP BY or an aggregate; saw ON vs WHERE outputs; **self-join** — wrote employee + boss query myself, with LEFT JOIN to keep Raja | ✅ |
-| | 1 | **Pick up here:** (a) finish the savings self-join: pairing rule `t.day = y.day + 1` done, now write "today's amount is more than yesterday's" in WHERE; (b) problem 8 onward; (c) retype `HAVING SUM(amount) > 10000`; (d) redo 3 old problems from scratch | |
+| 15 Oct | 1 | Problem 7 solved alone (visits with no transaction: LEFT JOIN + IS NULL). Learned: every SELECT column must be in GROUP BY or an aggregate; saw ON vs WHERE outputs; **self-join** — wrote employee + boss query myself, with LEFT JOIN to keep Raja. **Rising Temperature** — correct query written (self-join + `T.recordDate = Y.recordDate + 1`; first try had the −1 on the wrong side) | ✅ |
+| | 1 | **Pick up here:** (a) next LeetCode problem after Rising Temperature; (b) habit: before submitting, test the rule on one real row; (c) retype `HAVING SUM(amount) > 10000`; (d) redo 3 old problems from scratch (incl. Rising Temperature) | |
 | | 1 | | |
 | | 1 | | |
 
