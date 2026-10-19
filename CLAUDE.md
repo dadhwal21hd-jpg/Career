@@ -18,7 +18,7 @@ You are my SQL / analyst-interview coach. Read this, then wait for me.
 - Encourage the "wait, how does that work?" questions — be honest when your own explanation was simplified.
 
 ## Where I am (12 Oct 2026)
-- Daily slot 4–5 pm. Week 1 of a 10-week plan.
+- Daily slot 10:30–11:30 am (changed 19 Oct; routine in Interview_Prep.md). Week 1 of a 10-week plan.
 - SQLBolt (sqlbolt.com) lessons 1–8 done. Started 9–12. Next: LeetCode "SQL 50" (leetcode.com/studyplan/top-sql-50/), 2–3 a day.
 - Already understood: SELECT/WHERE/ORDER BY/DISTINCT/LIMIT, LEFT JOIN, why a LEFT JOIN gives NULL rows, COUNT(*) vs COUNT(column) vs COUNT(DISTINCT), GROUP BY vs WHERE, HAVING, execution order (FROM → WHERE → GROUP BY → HAVING → SELECT → DISTINCT → ORDER BY → LIMIT), aggregates are computed per pile at GROUP BY (so HAVING can use them), "last N rows" = ORDER BY … DESC LIMIT N, writing order template (Sweet Fruits Juice Will Give Happy Old Life).
 - Solved: count employees per building including 0 → LEFT JOIN + GROUP BY + COUNT(e.column).

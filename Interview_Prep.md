@@ -1,6 +1,6 @@
 # Interview Prep — 10 weeks
 
-**Daily slot: 4:00–5:00 pm. Phone away. Problems only — no notes, no study docs.**
+**Daily slot: 10:30–11:30 am (most productive time). Phone away. Problems only — no notes, no study docs.**
 
 Goal: analyst roles — AMEX Risk Analyst (stretch), pharma / healthcare analytics (ZS, IQVIA, Axtria), supply-chain / retail-tech analyst.
 
@@ -9,6 +9,19 @@ Goal: analyst roles — AMEX Risk Analyst (stretch), pharma / healthcare analyti
 1. Same hour every day. Missed a day? Do it the next day — never skip two in a row.
 2. Solve, don't read. If stuck for 15 min, look at the answer, then solve it again tomorrow without looking.
 3. One line in the log below every day. Tell Claude at the start of each session.
+4. Stop at 60 minutes, even mid-problem. Frustrated? Stop early — that's tiredness, not stupidity.
+
+## The daily hour (10:30–11:30)
+
+| Minutes | Do |
+|---|---|
+| 0–10 | Redo one old problem from a blank screen (oldest in "Pick up here") |
+| 10–50 | 1–2 new problems. Stuck 15 min → Query Stepper or the answer, then mark it for redo |
+| 50–60 | Tell Claude "log it" → log updated and pushed |
+
+- **Quiet moments at work:** light stuff only — step through a problem in the Query Stepper (`visuals/`), or add one Amazon story to WINS.md. No new problems.
+- **Sunday:** redo 3 old problems with no help. Any that fail go back on the list.
+- **Home:** `git pull` before starting.
 
 ## The plan
 
