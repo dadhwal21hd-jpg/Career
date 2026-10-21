@@ -17,7 +17,7 @@ Web app (React + FastAPI + Postgres/Supabase), used every working day by
 |---|---|---|
 | **Stock** — what is on the shelf | Nobody knew without walking the racks | Stock built from three systems; within **1.3%** of the 21 Sep 2026 physical count (1,320 vs 1,303 pcs) |
 | **"Where is this piece / who got it / how many made?"** | ~1 hour per style, no one owned the task, MDs asked daily | Answered in seconds in the catalogue / WIP tracker |
-| **Dispatch records** | MIDAP captured **52%** of real dispatches | **75%**; lots wrongly shown "still on shelf" fell **790 → 203** |
+| **Dispatch records** | MIDAP captured **52%** of real dispatches | **75%** by manual fixes (lots wrongly shown "still on shelf" fell **790 → 203**); now **API-integrated → should be 100%** (to verify: last month's dispatch count, system vs Oracle = ___ / ___) |
 | **Delays** | The delay signal was thrown away at import (58 delayed rows in the whole table) | Delay Report shows what's stuck and who to call (e.g. 127 lots stuck at one printing step) |
 | **Second brand (KK)** | Not in the system | Own stock count, catalogue, stock view — kept separate from R Studio |
 | **Running cost** | — | Near zero; fixed a data-usage problem that had got the database cut off |
