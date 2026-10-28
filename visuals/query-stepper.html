@@ -199,6 +199,24 @@ const P=[
     {lines:[0],uses:[],title:"SELECT name, bonus",say:"Done: Ravi (500) and Om (NULL).",
       run:(T,p)=>keep(p).map(r=>({"e.name":r["e.name"],"b.bonus":r["b.bonus"]}))}
   ]
+},
+{
+  name:"Managers with at Least 5 Direct Reports",
+  tables:{Employee:[{id:1,name:"Raja",managerId:null},{id:2,name:"Ravi",managerId:1},{id:3,name:"Sita",managerId:1},{id:4,name:"Kirti",managerId:1},{id:5,name:"Om",managerId:2}]},
+  alias:{Employee:"w and m"},
+  sql:["SELECT m.name","FROM Employee w          -- w = workers","JOIN Employee m          -- m = managers","  ON w.managerId = m.id","GROUP BY m.id, m.name","HAVING COUNT(*) >= 3;   -- real problem: 5"],
+  steps:[
+    {lines:[1],uses:["Employee"],title:"FROM: copy w (workers)",say:"First copy, called <b>w</b>. Read every row as <b>a worker holding a slip with his boss's number</b> (managerId). Ravi's slip says 1, Om's says 2.",
+      run:(T)=>from(T,"Employee","w")},
+    {lines:[2,3],uses:["Employee"],title:"JOIN copy m: find each worker's boss",say:"Second copy, called <b>m</b>. Each worker walks to the m row whose <b>id</b> matches his slip: <b>w.managerId = m.id</b>. Ravi, Sita and Kirti all find Raja (id 1). Om finds Ravi (id 2). Raja's slip is NULL, so he finds no boss and drops (plain JOIN).",
+      run:(T,p)=>join(p,T,"Employee","m",r=>r["w.managerId"]===r["m.id"],false)},
+    {lines:[4],uses:[],title:"GROUP BY the boss",say:"Now group by the <b>m</b> side, the boss. Raja's pile has 3 workers. Ravi's pile has 1 (Om). Note: we group by m, not w, because we're counting <b>per boss</b>.",
+      run:(T,p)=>p,group:["m.id"]},
+    {lines:[5],uses:[],title:"Squash + HAVING: 3 or more?",say:"Each pile becomes one row, with its count. Raja = 3, Ravi = 1. <b>HAVING COUNT(*) &gt;= 3</b> crosses out Ravi. (Mini example uses 3; LeetCode uses 5.)",
+      run:(T,p)=>{const {order,g}=group(p,["m.id"]);return mark(order.map(k=>({"m.id":g[k][0]["m.id"],"m.name":g[k][0]["m.name"],"COUNT(*)":g[k].length})),r=>r["COUNT(*)"]>=3)}},
+    {lines:[0],uses:[],title:"SELECT m.name",say:"Only Raja survives. Show his name from the <b>m</b> copy, because he's the boss.",
+      run:(T,p)=>keep(p).map(r=>({"m.name":r["m.name"]}))}
+  ]
 }
 ];
 
