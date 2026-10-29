@@ -113,10 +113,65 @@ function group(rows,keys){
   rows.forEach(r=>{const k=keys.map(c=>r[c]).join('|');if(!g[k]){g[k]=[];order.push(k)}g[k].push(r)});
   return {order,g};
 }
+const sortBy=(rows,keys)=>[...rows].sort((a,b)=>{for(const k of keys){if(a[k]<b[k])return -1;if(a[k]>b[k])return 1}return 0});
 const day=d=>d==null?null:d+' Jan';
 
 /* ---------- problems ---------- */
 const P=[
+{
+  name:"Basics 1: piles, WHERE vs HAVING",
+  tables:{Marks:[
+    {student:"Ravi",subject:"Maths",marks:80},{student:"Simar",subject:"Maths",marks:40},{student:"Ravi",subject:"English",marks:90},
+    {student:"Om",subject:"Maths",marks:20},{student:"Simar",subject:"English",marks:70},{student:"Om",subject:"English",marks:50}]},
+  alias:{Marks:"t"},
+  sql:["SELECT t.student, COUNT(*) AS papers, SUM(t.marks) AS total","FROM Marks t","WHERE t.marks >= 30","GROUP BY t.student","HAVING SUM(t.marks) >= 100","ORDER BY total DESC;"],
+  steps:[
+    {lines:[1],uses:["Marks"],title:"FROM: the raw rows",say:"6 rows, in no particular order. Each row is one exam paper.",
+      run:(T)=>from(T,"Marks","t")},
+    {lines:[2],uses:[],title:"WHERE: check single rows",say:"WHERE looks at <b>one row at a time</b>. No piles exist yet, so it can't know anyone's total. Om's Maths paper (20) is below 30, so it's crossed out.",
+      run:(T,p)=>mark(p,r=>r["t.marks"]>=30)},
+    {lines:[3],uses:[],title:"GROUP BY student: make the piles",say:"The survivors are sorted into piles, one per student (same colour = same pile). <b>A pile is a stack of whole rows lying one under another, not a column.</b> Ravi's pile has 2 rows, Simar's 2, Om's just 1 (WHERE removed his other paper). Nothing is squashed yet.",
+      run:(T,p)=>sortBy(keep(p),["t.student"]),group:["t.student"]},
+    {lines:[0,3],uses:[],title:"Squash: COUNT and SUM are calculated here",say:"Each pile becomes <b>one row</b>. COUNT(*) counts the rows in the pile, and SUM adds up the marks. <b>This happens at GROUP BY time</b>, which is why HAVING (next) can already use these numbers. SELECT only displays them later.",
+      run:(T,p)=>{const {order,g}=group(p,["t.student"]);return order.map(k=>{const rs=g[k];return{"t.student":rs[0]["t.student"],"COUNT(*)":rs.length,"SUM(marks)":rs.reduce((x,r)=>x+r["t.marks"],0)}})}},
+    {lines:[4],uses:[],title:"HAVING: check the squashed rows",say:"HAVING looks at the <b>squashed rows</b>, so the totals exist now. Om's total (50) is below 100, so he's crossed out. <b>WHERE = before the squash, on single rows. HAVING = after the squash, on totals.</b>",
+      run:(T,p)=>mark(p,r=>r["SUM(marks)"]>=100)},
+    {lines:[0],uses:[],title:"SELECT: the names are born here",say:"SELECT shows the survivors and gives the numbers their names, <b>papers</b> and <b>total</b>. The names are born <b>here</b>, so WHERE and HAVING above could never use them.",
+      run:(T,p)=>keep(p).map(r=>({"t.student":r["t.student"],"papers":r["COUNT(*)"],"total":r["SUM(marks)"]}))},
+    {lines:[5],uses:[],title:"ORDER BY total: now the alias works",say:"ORDER BY runs <b>after</b> SELECT, so it can use the name <b>total</b>. Highest first.",
+      run:(T,p)=>[...p].sort((a,b)=>b.total-a.total)}
+  ]
+},
+{
+  name:"Basics 2: COUNT(*) vs COUNT(column)",
+  tables:{Orders:[{customer:"Ravi",coupon:"DIWALI"},{customer:"Simar",coupon:null},{customer:"Ravi",coupon:null},{customer:"Simar",coupon:null},{customer:"Ravi",coupon:"NEW10"}]},
+  alias:{Orders:"o"},
+  sql:["SELECT o.customer,","       COUNT(*)        AS orders,","       COUNT(o.coupon) AS used_coupon","FROM Orders o","GROUP BY o.customer;"],
+  steps:[
+    {lines:[3],uses:["Orders"],title:"FROM: orders",say:"5 orders. Some have a coupon, and some have <b>NULL</b> (no coupon).",
+      run:(T)=>from(T,"Orders","o")},
+    {lines:[4],uses:[],title:"GROUP BY customer",say:"One pile per customer. Ravi's pile has 3 rows, Simar's has 2.",
+      run:(T,p)=>sortBy(p,["o.customer"]),group:["o.customer"]},
+    {lines:[1],uses:[],title:"COUNT(*): count the rows",say:"<b>COUNT(*)</b> counts the <b>rows</b> in each pile, NULL or not. Ravi 3, Simar 2.",
+      run:(T,p)=>{const {order,g}=group(p,["o.customer"]);return order.map(k=>({"o.customer":k,"orders":g[k].length}))}},
+    {lines:[2],uses:[],title:"COUNT(column): skip the NULLs",say:"<b>COUNT(o.coupon)</b> counts only the rows where coupon is <b>not NULL</b>. Ravi used 2 coupons, Simar 0. That's why <b>COUNT(e.col)</b> gives 0 for empty boxes after a LEFT JOIN, while COUNT(*) would wrongly give 1.",
+      run:(T)=>{const {order,g}=group(sortBy(from(T,"Orders","o"),["o.customer"]),["o.customer"]);return order.map(k=>({"o.customer":k,"orders":g[k].length,"used_coupon":g[k].filter(r=>r["o.coupon"]!=null).length}))}}
+  ]
+},
+{
+  name:"Basics 3: GROUP BY two columns + the SELECT rule",
+  tables:{Sales:[{city:"Ludhiana",product:"Kurta",qty:2},{city:"Delhi",product:"Kurta",qty:1},{city:"Ludhiana",product:"Saree",qty:1},{city:"Ludhiana",product:"Kurta",qty:3},{city:"Delhi",product:"Saree",qty:4}]},
+  alias:{Sales:"s"},
+  sql:["SELECT s.city, s.product,","       SUM(s.qty) AS pieces","FROM Sales s","GROUP BY s.city, s.product;"],
+  steps:[
+    {lines:[2],uses:["Sales"],title:"FROM: sales",say:"5 sales rows.",
+      run:(T)=>from(T,"Sales","s")},
+    {lines:[3],uses:[],title:"GROUP BY two columns: same city AND same product",say:"A pile needs <b>both</b> to match. Ludhiana + Kurta is one pile (2 rows). Ludhiana + Saree is a <b>different</b> pile. The comma means <b>and also</b>.",
+      run:(T,p)=>sortBy(p,["s.city","s.product"]),group:["s.city","s.product"]},
+    {lines:[0,1],uses:[],title:"Squash + the SELECT rule",say:"Inside each pile, city and product are the <b>same on every row</b>, so SQL can show them. qty is <b>different</b> (Ludhiana–Kurta has 2 and 3). Ask for plain s.qty and SQL can't pick one, so it errors. Wrap it in <b>SUM</b> and the pile gives one answer: 5. <b>Rule: every SELECT column is either in GROUP BY or inside an aggregate.</b>",
+      run:(T,p)=>{const {order,g}=group(p,["s.city","s.product"]);return order.map(k=>{const rs=g[k];return{"s.city":rs[0]["s.city"],"s.product":rs[0]["s.product"],"pieces":rs.reduce((x,r)=>x+r["s.qty"],0)}})}}
+  ]
+},
 {
   name:"Students and Examinations",
   tables:{
