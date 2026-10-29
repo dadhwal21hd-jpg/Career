@@ -217,6 +217,27 @@ const P=[
     {lines:[0],uses:[],title:"SELECT m.name",say:"Only Raja survives. Show his name from the <b>m</b> copy, because he's the boss.",
       run:(T,p)=>keep(p).map(r=>({"m.name":r["m.name"]}))}
   ]
+},
+{
+  name:"Confirmation Rate (CASE WHEN)",
+  tables:{
+    Signups:[{user_id:3},{user_id:7},{user_id:6}],
+    Confirmations:[{user_id:3,action:"timeout"},{user_id:3,action:"timeout"},{user_id:7,action:"confirmed"},{user_id:7,action:"confirmed"},{user_id:7,action:"timeout"}]
+  },
+  alias:{Signups:"s",Confirmations:"c"},
+  sql:["SELECT s.user_id,","       ROUND(AVG( CASE WHEN c.action = 'confirmed'","                       THEN 1 ELSE 0 END )::numeric, 2) AS confirmation_rate","FROM Signups s","LEFT JOIN Confirmations c ON s.user_id = c.user_id","GROUP BY s.user_id;"],
+  steps:[
+    {lines:[3],uses:["Signups"],title:"FROM: all users",say:"Start with every user who signed up: 3, 7 and 6.",
+      run:(T)=>from(T,"Signups","s")},
+    {lines:[4],uses:["Confirmations"],title:"LEFT JOIN: attach their messages",say:"Each user gets one row per confirmation message. User 7 has 3 messages, so 3 rows. User 6 has <b>none</b>, but LEFT keeps him, with <b>NULL</b>.",
+      run:(T,p)=>join(p,T,"Confirmations","c",r=>r["s.user_id"]===r["c.user_id"],true)},
+    {lines:[5],uses:[],title:"GROUP BY user: make the piles",say:"Rows of the same user get the same colour. Nothing is squashed yet. The rows are just sorted into piles.",
+      run:(T,p)=>p,group:["s.user_id"]},
+    {lines:[1,2],uses:[],title:"CASE WHEN: each row gets its 1 or 0",say:"<b>This is where CASE runs: inside each pile, row by row, just before AVG.</b> Like Excel's IF dragged down a column. 'confirmed' → 1. Anything else → 0, including user 6's NULL. Notice it makes a <b>new column on the fly</b>. You never wrote that column anywhere.",
+      run:(T,p)=>p.map(r=>({...r,"CASE → 1/0":r["c.action"]==="confirmed"?1:0})),group:["s.user_id"]},
+    {lines:[0,1,2],uses:[],title:"AVG + ROUND: squash each pile",say:"Each pile becomes one row: the average of its 1s and 0s. User 3: (0+0)÷2 = <b>0</b>. User 7: (1+1+0)÷3 = <b>0.67</b>. User 6: 0÷1 = <b>0</b>. The average of 1s and 0s is the fraction confirmed.",
+      run:(T,p)=>{const {order,g}=group(p,["s.user_id"]);return order.map(k=>{const rs=g[k];return{"s.user_id":rs[0]["s.user_id"],"confirmation_rate":(rs.reduce((x,r)=>x+r["CASE → 1/0"],0)/rs.length).toFixed(2)}})}}
+  ]
 }
 ];
 
