@@ -54,7 +54,8 @@ Goal: analyst roles — AMEX Risk Analyst (stretch), pharma / healthcare analyti
 | 25–26 Oct | 2 | — (website launch week) | ❌ |
 | 27 Oct | 2 | **Average Selling Price redo** — blank screen, all 4 traps + NULLIF, perfect. Learned: scalar subquery `(SELECT COUNT(*) FROM Users)` = one number; ORDER BY two columns (second breaks ties). Percentage of Users — got confused | ✅ |
 | 28 Oct | 2 | **Percentage of Users Attended a Contest** — by eye → sentence → first try (worked out no JOIN needed). **Queries Quality and Percentage** — fixed: subquery ignores GROUP BY (counted whole table) → `SUM(CASE WHEN rating < 3 THEN 1 ELSE 0 END)`; CASE without ELSE gives NULL (AVG skips it). Managers revisit confused → added to Query Stepper | ✅ |
-| | 2 | **Pick up here:** (a) redo **Managers with 5 Direct Reports** from a blank screen after one pass in the Stepper (first 10 min); (b) **Monthly Transactions I** (CASE WHEN); (c) test the rule on one real row before submitting | |
+| 29 Oct | 3 | **Revision day.** Blank-screen redos: **Managers with 5 Direct Reports** ✅ (fixed `> 5` → `>= 5`), **Students and Examinations** ✅ (typos: hyphen, comma; forgot ORDER BY), **Rising Temperature** ✅ first try (`t.recordDate - 1 = y.recordDate`). **Confirmation Rate** — stuck on how CASE WHEN runs → added to Query Stepper; big click: piles are stacks of whole rows (was picturing them vertically). Added 3 "Basics" lessons to the Stepper (WHERE vs HAVING, COUNT(*) vs COUNT(col), GROUP BY two columns + SELECT rule). New pre-submit check: scan for `-` and `,` inside names | ✅ |
+| | 3 | **Pick up here:** (a) redo **Confirmation Rate** from a blank screen (first 10 min); (b) **Monthly Transactions I** (CASE WHEN); (c) test the rule on one real row before submitting | |
 | | 1 | | |
 | | 1 | | |
 
