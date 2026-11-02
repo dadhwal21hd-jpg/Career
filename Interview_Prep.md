@@ -55,7 +55,11 @@ Goal: analyst roles — AMEX Risk Analyst (stretch), pharma / healthcare analyti
 | 27 Oct | 2 | **Average Selling Price redo** — blank screen, all 4 traps + NULLIF, perfect. Learned: scalar subquery `(SELECT COUNT(*) FROM Users)` = one number; ORDER BY two columns (second breaks ties). Percentage of Users — got confused | ✅ |
 | 28 Oct | 2 | **Percentage of Users Attended a Contest** — by eye → sentence → first try (worked out no JOIN needed). **Queries Quality and Percentage** — fixed: subquery ignores GROUP BY (counted whole table) → `SUM(CASE WHEN rating < 3 THEN 1 ELSE 0 END)`; CASE without ELSE gives NULL (AVG skips it). Managers revisit confused → added to Query Stepper | ✅ |
 | 29 Oct | 3 | **Revision day.** Blank-screen redos: **Managers with 5 Direct Reports** ✅ (fixed `> 5` → `>= 5`), **Students and Examinations** ✅ (typos: hyphen, comma; forgot ORDER BY), **Rising Temperature** ✅ first try (`t.recordDate - 1 = y.recordDate`). **Confirmation Rate** — stuck on how CASE WHEN runs → added to Query Stepper; big click: piles are stacks of whole rows (was picturing them vertically). Added 3 "Basics" lessons to the Stepper (WHERE vs HAVING, COUNT(*) vs COUNT(col), GROUP BY two columns + SELECT rule). New pre-submit check: scan for `-` and `,` inside names | ✅ |
-| | 3 | **Pick up here:** (a) redo **Confirmation Rate** from a blank screen (first 10 min); (b) **Monthly Transactions I** (CASE WHEN); (c) test the rule on one real row before submitting | |
+| 30 Oct | 3 | — (skipped) | ❌ |
+| 31 Oct | 3 | **Confirmation Rate redo** — blank screen, perfect first go (the Stepper worked). **Monthly Transactions I** — learned `TO_CHAR(date, 'YYYY-MM')`; fixes: subquery ignores piles again (whole-table total), CASE must sit inside SUM (`SUM(CASE … THEN amount …)`), not outside | ✅ |
+| 1 Nov | 3 | — (skipped) | ❌ |
+| 2 Nov | 3 | **Monthly Transactions I** — rewrote clean from scratch for practice (`THEN 1` counts, `THEN amount` adds money) | ✅ |
+| | 3 | **Pick up here:** (a) next LeetCode SQL 50 problem after Monthly Transactions I; (b) test the rule on one real row before submitting | |
 | | 1 | | |
 | | 1 | | |
 
