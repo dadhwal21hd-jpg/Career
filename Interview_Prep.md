@@ -59,7 +59,8 @@ Goal: analyst roles — AMEX Risk Analyst (stretch), pharma / healthcare analyti
 | 31 Oct | 3 | **Confirmation Rate redo** — blank screen, perfect first go (the Stepper worked). **Monthly Transactions I** — learned `TO_CHAR(date, 'YYYY-MM')`; fixes: subquery ignores piles again (whole-table total), CASE must sit inside SUM (`SUM(CASE … THEN amount …)`), not outside | ✅ |
 | 1 Nov | 3 | — (skipped) | ❌ |
 | 2 Nov | 3 | **Monthly Transactions I** — rewrote clean from scratch for practice (`THEN 1` counts, `THEN amount` adds money) | ✅ |
-| | 3 | **Pick up here:** (a) next LeetCode SQL 50 problem after Monthly Transactions I; (b) test the rule on one real row before submitting | |
+| 2 Nov | 3 | **Find duplicates** (own question) — `GROUP BY email HAVING COUNT(email) > 1` (fixed WHERE → HAVING, `> 2` → `> 1`); = LeetCode #182 Duplicate Emails. **Immediate Food Delivery II** — first try counted every immediate order (needs first orders only); wrote the first-orders list (`MIN(order_date)` + GROUP BY customer). Learned: subquery that returns a list + `(a, b) IN (…)` | 🟡 |
+| | 3 | **Pick up here:** (a) Immediate Food Delivery II — put the first-orders query inside `WHERE (customer_id, order_date) IN ( … )`, then add the percentage on top; (b) submit Duplicate Emails (#182); (c) test the rule on one real row before submitting | |
 | | 1 | | |
 | | 1 | | |
 
