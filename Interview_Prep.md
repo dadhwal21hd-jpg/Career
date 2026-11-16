@@ -19,6 +19,7 @@ Goal: analyst roles — AMEX Risk Analyst (stretch), pharma / healthcare analyti
 | 10–50 | 1–2 new problems. Stuck 15 min → Query Stepper or the answer, then mark it for redo |
 | 50–60 | Tell Claude "log it" → log updated and pushed |
 
+- **Until 4 Dec (raise talk):** 10:30–11:00 SQL (one redo or one problem), 11:00–11:30 Dec prep (one WINS number at a time).
 - **Quiet moments at work:** light stuff only — step through a problem in the Query Stepper (`visuals/`), or add one Amazon story to WINS.md. No new problems.
 - **Sunday:** redo 3 old problems with no help. Any that fail go back on the list.
 - **Home:** `git pull` before starting.
