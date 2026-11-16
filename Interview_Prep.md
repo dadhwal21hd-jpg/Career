@@ -61,6 +61,8 @@ Goal: analyst roles — AMEX Risk Analyst (stretch), pharma / healthcare analyti
 | 2 Nov | 3 | **Monthly Transactions I** — rewrote clean from scratch for practice (`THEN 1` counts, `THEN amount` adds money) | ✅ |
 | 2 Nov | 3 | **Find duplicates** (own question) — `GROUP BY email HAVING COUNT(email) > 1` (fixed WHERE → HAVING, `> 2` → `> 1`); = LeetCode #182 Duplicate Emails. **Immediate Food Delivery II** — first try counted every immediate order (needs first orders only); wrote the first-orders list (`MIN(order_date)` + GROUP BY customer). Learned: subquery that returns a list + `(a, b) IN (…)` | 🟡 |
 | 3 Nov | 3 | **Immediate Food Delivery II** — accepted ✅ (by eye → first orders → 50% on a mini table, then SQL; fixed missing GROUP BY inside the subquery). First subquery problem. Learned: `(customer_id, order_date) IN (…)` needs both — customer alone matches every row, the date picks the first order | ✅ |
+| 4–11 Nov | 3 | — (skipped — work, life; eased off expecting the Dec raise) | ❌ |
+| 12 Nov | 3 | **Summary revision** on one Orders table, quick check per topic: running order, WHERE, GROUP BY piles, HAVING, SELECT rule, CASE WHEN (label / count / add money), AVG(CASE) = rate (no ELSE → NULL → rate goes wrong, not an error), COUNT(*) never skips NULL, LEFT JOIN + COUNT(col) for zeros, ON vs WHERE (rule about right table → ON), self-join (fixed `> 2` → `>= 2` again), subqueries (scalar = whole-table number next to piles; list + IN). Stopped at the MIN check | ✅ |
 | | 3 | **Pick up here:** (a) Duplicate Emails (#182) — blank screen (Person: id, email → output Email); (b) redo Immediate Food Delivery II from a blank screen; (c) test the rule on one real row before submitting | |
 | | 1 | | |
 | | 1 | | |
